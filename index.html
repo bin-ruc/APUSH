@@ -1,0 +1,514 @@
+import { useState } from "react";
+
+const acts = [
+  {
+    id: 1,
+    title: "ACT I",
+    subtitle: "Causes of the American Revolution",
+    color: "#c0392b",
+    accent: "#e74c3c",
+    scenes: [
+      {
+        title: "The French and Indian War",
+        year: "1754–1763",
+        vocab: "French and Indian War",
+        definition: "A conflict between France and Great Britain over the Ohio River Valley, which later spread globally and became the Seven Years' War — arguably the first World War.",
+        cause: "British colonists wanted to migrate west into the Ohio country. France claimed that territory. Several Native American groups (led by Shawnees and Delawares) allied to defend the land.",
+        effect: "Britain won. The Treaty of Paris (1763) reshaped North America: Spain ceded Florida to Britain, France gave territory west of the Mississippi to Spain, and France ceded the Ohio Valley to Britain.",
+        events: [
+          { year: "1754", detail: "War erupted due to a military blunder by George Washington." },
+          { year: "1756", detail: "Conflict spread to Europe/India/Africa — became the Seven Years' War." },
+          { year: "1763", detail: "Treaty of Paris signed — Britain wins, map of North America redrawn." },
+        ]
+      },
+      {
+        title: "Proclamation Line & War Debt",
+        year: "1763",
+        vocab: "Proclamation Line of 1763",
+        definition: "A British law forbidding colonists from migrating west beyond the Appalachian Mountains, issued to avoid costly conflicts with Native Americans.",
+        cause: "Winning the French and Indian War cost Britain a fortune. Pontiac's Rebellion had already erupted between colonists and Native Americans. Britain couldn't afford to police new conflicts.",
+        effect: "Colonists were furious — they felt owed the land for their participation in the war. This bred deep resentment toward British authority.",
+        events: [
+          { year: "1763", detail: "Proclamation Line drawn — colonists forbidden from moving west of the Appalachians." },
+          { year: "1763", detail: "Pontiac's Rebellion: Native American alliance fights back against colonial encroachment." },
+        ]
+      },
+      {
+        title: "British Taxation & Colonial Resistance",
+        year: "1763–1774",
+        vocab: "Stamp Act / No Taxation Without Representation",
+        definition: "The Stamp Act (1765) taxed paper goods. Colonists protested because they had no representation in Parliament — summarized as 'No Taxation Without Representation.'",
+        cause: "Britain's war debt skyrocketed. PM George Grenville began enforcing Navigation Acts and pushed Parliament to tax the colonies via the Stamp Act (1765).",
+        effect: "Massive colonial resistance: Sons of Liberty, Daughters of Liberty, Committees of Correspondence, and the Stamp Act Congress formed. Stamp Act repealed in 1766 — but Declaratory Act passed saying Parliament still had full authority.",
+        events: [
+          { year: "1765", detail: "Stamp Act passed. Stamp Act Congress convenes — 9 colonies petition Parliament." },
+          { year: "1766", detail: "Stamp Act repealed. Declaratory Act passed — Parliament asserts total control." },
+          { year: "1770", detail: "Boston Massacre — British soldiers kill 5 Bostonians." },
+          { year: "1773", detail: "Boston Tea Party — colonists dump 50 tons of tea into Boston Harbor." },
+          { year: "1774", detail: "Coercive Acts (Intolerable Acts) — closed Boston Harbor, new Quartering Act." },
+        ]
+      },
+      {
+        title: "Ideas Behind the Revolution",
+        year: "1740s–1776",
+        vocab: "Enlightenment / Natural Rights / Social Contract / Great Awakening",
+        definition: "Enlightenment ideas (natural rights, social contract) + religious revival (Great Awakening) convinced colonists that liberty was God-given and that tyrannical governments could be overthrown.",
+        cause: "Enlightenment thinkers argued humans are born with rights (life, liberty, property) and that governments exist only to protect those rights. The Great Awakening reinforced individual authority over church hierarchies.",
+        effect: "Colonists began believing individual talent > hereditary power. These ideas made revolution feel morally justified, especially after Thomas Paine's Common Sense (1776) argued independence was the only option.",
+        events: [
+          { year: "1740s", detail: "Great Awakening emphasized individual religious experience, challenged authority." },
+          { year: "1775", detail: "First & Second Continental Congresses — still seeking negotiation, not independence." },
+          { year: "Jan 1776", detail: "Thomas Paine publishes Common Sense — argues independence is inevitable." },
+          { year: "July 1776", detail: "Declaration of Independence written by Jefferson, grounded in natural rights." },
+        ]
+      },
+      {
+        title: "The American Revolution",
+        year: "1776–1783",
+        vocab: "Continental Army / Battle of Saratoga / Treaty of Paris (1783)",
+        definition: "The war for independence. Americans should have lost (loyalists + British military power) but won through Washington's leadership, French alliance (after Saratoga), and ideological resilience.",
+        cause: "Colonial grievances with British taxation and tyranny, fueled by Enlightenment ideals and Paine's Common Sense, pushed colonists to declare independence.",
+        effect: "American victory at Yorktown (1781). Treaty of Paris (1783) ended the war and doubled US territory — setting the stage for westward migration and future conflicts.",
+        events: [
+          { year: "1776", detail: "Battle of Trenton — Washington's surprise attack proved Americans could win." },
+          { year: "1777", detail: "Battle of Saratoga — patriot victory convinced France to join the war." },
+          { year: "1781", detail: "Battle of Yorktown — final British defeat." },
+          { year: "1783", detail: "Treaty of Paris signed — US gains independence and doubles its land." },
+        ]
+      },
+    ]
+  },
+  {
+    id: 2,
+    title: "ACT II",
+    subtitle: "A New Republic",
+    color: "#1a5276",
+    accent: "#2980b9",
+    scenes: [
+      {
+        title: "Revolutionary Ideals & Social Change",
+        year: "1776–1790s",
+        vocab: "Abolitionism / Republican Motherhood",
+        definition: "Revolutionary ideals of liberty and equality sparked movements to end slavery (mostly in the North), expand voting rights, and improve women's roles through 'Republican Motherhood.'",
+        cause: "Jefferson's words — 'all men are created equal' — made slavery and inequality logically contradictory to the republic's founding ideals.",
+        effect: "Vermont abolished slavery; Pennsylvania began gradual abolition. Southern states resisted. Women gained more access to education but not political rights. American Revolution inspired the French Revolution, Haitian Revolution, and Latin American independence movements.",
+        events: [
+          { year: "1777", detail: "Vermont Constitution abolishes slavery outright." },
+          { year: "1780", detail: "Pennsylvania enacts gradual abolition of slavery." },
+          { year: "1789", detail: "French Revolution inspired by American ideals." },
+          { year: "1791", detail: "Haitian Revolution — first Black republic in history." },
+        ]
+      },
+      {
+        title: "Articles of Confederation",
+        year: "1777–1787",
+        vocab: "Articles of Confederation / Shays' Rebellion",
+        definition: "The first US Constitution — created an extremely weak federal government. States held most power. Called 'a fart in the shape of a government' because it could barely function.",
+        cause: "After fighting a tyrannical centralized government, Americans intentionally made the federal government weak to avoid recreating British-style oppression.",
+        effect: "Five critical failures: (1) couldn't regulate international trade, (2) no authority to collect taxes (broke), (3) couldn't settle interstate commerce disputes, (4) couldn't remove British forts on western borders, (5) Shays' Rebellion exposed it could not keep order.",
+        events: [
+          { year: "1777", detail: "Articles of Confederation drafted by Continental Congress." },
+          { year: "1783", detail: "Britain cuts off US trade with West Indies; Spain blocks Mississippi River." },
+          { year: "1786–87", detail: "Shays' Rebellion — unpaid veterans storm courts and a federal arsenal in Massachusetts." },
+          { year: "1787", detail: "Northwest Ordinance passed — regulated western territory, banned slavery there, set path for statehood." },
+        ]
+      },
+      {
+        title: "Constitutional Convention",
+        year: "1787",
+        vocab: "Great Compromise / Three-Fifths Compromise / Federalism / Separation of Powers",
+        definition: "55 delegates in Philadelphia replaced the Articles with a new Constitution. Strengthened federal government through separation of powers (3 branches) and federalism (power shared with states).",
+        cause: "Shays' Rebellion and the 5 failures of the Articles proved a stronger federal government was essential for the republic to survive.",
+        effect: "New Constitution created 3 branches (legislative, executive, judicial), a bicameral Congress (Great Compromise), counted 3/5 of enslaved people for representation, and banned the international slave trade after 1808.",
+        events: [
+          { year: "1787", detail: "Constitutional Convention in Philadelphia — goal: revise Articles, ended up replacing them." },
+          { year: "1787", detail: "Great Compromise: House = population-based; Senate = equal representation per state." },
+          { year: "1787", detail: "Three-Fifths Compromise: 3/5 of enslaved population counted for representation." },
+          { year: "1788", detail: "Constitution ratified by 9 states — becomes law of the land." },
+        ]
+      },
+      {
+        title: "Federalists vs. Anti-Federalists",
+        year: "1787–1791",
+        vocab: "Federalists / Anti-Federalists / Federalist Papers / Bill of Rights",
+        definition: "Federalists (Hamilton) supported ratification; Anti-Federalists (Jefferson's side) feared centralized power and demanded a Bill of Rights. Federalists won, but promised a Bill of Rights.",
+        cause: "The new Constitution dramatically expanded federal power — Anti-Federalists feared this would recreate British-style tyranny.",
+        effect: "Constitution ratified in 1788. Bill of Rights (first 10 amendments) added shortly after to address Anti-Federalist fears.",
+        events: [
+          { year: "1787–88", detail: "Federalist Papers written by Hamilton, Madison, Jay — argued for ratification." },
+          { year: "1788", detail: "9 states ratify Constitution — it replaces Articles of Confederation." },
+          { year: "1791", detail: "Bill of Rights ratified — guaranteed individual liberties." },
+        ]
+      },
+      {
+        title: "The New Government in Action",
+        year: "1789–1797",
+        vocab: "Cabinet / Judiciary Act / Whiskey Rebellion / Neutrality Proclamation",
+        definition: "Washington set key precedents: cabinet departments, two-term limit, Farewell Address (avoid parties and foreign alliances). Judiciary Act created a 3-tier court system.",
+        cause: "The new Constitution gave the federal government real power but few specific instructions on HOW to govern — so early leaders had to invent it.",
+        effect: "Two political parties formed: Federalists (Hamilton) favored strong federal power; Democratic-Republicans (Jefferson) favored state power. Debates over a national bank, whiskey tax, French Revolution, and Alien & Sedition Acts deepened the divide.",
+        events: [
+          { year: "1789", detail: "Washington's cabinet formed: Jefferson (State), Hamilton (Treasury), Knox (War), Randolph (Justice)." },
+          { year: "1789", detail: "Judiciary Act — created 13 district courts, 3 courts of appeals, Supreme Court with 6 justices." },
+          { year: "1791", detail: "National Bank established over Democratic-Republican objections." },
+          { year: "1791–94", detail: "Whiskey Rebellion — farmers rebel against whiskey tax; Washington suppresses it with force." },
+          { year: "1793", detail: "Neutrality Proclamation — US stays out of French Revolution/European wars." },
+          { year: "1798", detail: "Alien & Sedition Acts — allowed silencing of dissent; Virginia & Kentucky Resolutions declared them unconstitutional." },
+        ]
+      },
+    ]
+  },
+  {
+    id: 3,
+    title: "ACT III",
+    subtitle: "Migration & Conflict",
+    color: "#1e8449",
+    accent: "#27ae60",
+    scenes: [
+      {
+        title: "Westward Migration & Native Conflict",
+        year: "1783–1800",
+        vocab: "Battle of Fallen Timbers / Treaty of Greenville / Jay's Treaty / Pinckney's Treaty",
+        definition: "After the Treaty of Paris (1783) doubled US territory, Americans flooded west. British and Spanish forces armed Native Americans to resist. The US military had to clear the path.",
+        cause: "The Treaty of Paris (1783) gave the US vast western territory. Land-hungry Americans migrated west. British forts remained (violating treaty terms) and armed Native American alliances to fight back.",
+        effect: "Battle of Fallen Timbers (1794) defeated Native alliance → Treaty of Greenville opened Ohio to settlement. Jay's Treaty forced British to leave western forts. Pinckney's Treaty opened New Orleans and Mississippi River, ending Spanish resistance.",
+        events: [
+          { year: "1783", detail: "Treaty of Paris doubles US land — massive migration west begins." },
+          { year: "1794", detail: "Battle of Fallen Timbers — US defeats Native alliance; Ohio opens for settlement." },
+          { year: "1794", detail: "Treaty of Greenville — Native Americans cede Ohio territory." },
+          { year: "1794", detail: "Jay's Treaty — Britain agrees to withdraw from western border forts." },
+          { year: "1796", detail: "Pinckney's Treaty — Spain opens Mississippi River and New Orleans to US merchants." },
+        ]
+      },
+      {
+        title: "Spread of Slavery Westward",
+        year: "1783–1800",
+        vocab: "Cotton / Tobacco / Soil Depletion / Abolitionism",
+        definition: "Southern planters migrated west because tobacco and cotton depleted soil. They brought slavery with them, alarming northerners (for both moral and economic reasons) and deepening the sectional divide.",
+        cause: "High-demand crops (tobacco, cotton) exhausted soil nutrients. Southern planters needed new land and moved west — bringing enslaved people with them.",
+        effect: "Slavery spread westward, creating a growing national conflict. Abolitionists (Quakers, Mennonites) objected on moral grounds; northern workers feared free labor undercutting paid labor. This tension would ultimately lead to the Civil War.",
+        events: [
+          { year: "1780s–1800s", detail: "Southern planters migrate west; slavery expands into new territories." },
+          { year: "1787", detail: "Northwest Ordinance bans slavery in the Northwest Territory — first legal limit on slavery's spread." },
+          { year: "1800", detail: "Sectional tensions over slavery continue to deepen heading into the next era." },
+        ]
+      },
+    ]
+  }
+];
+
+const allVocab = [
+  { term: "French and Indian War", def: "1754–1763 conflict between Britain and France over the Ohio River Valley. Spread globally as the Seven Years' War. Britain won but at enormous cost." },
+  { term: "Treaty of Paris (1763)", def: "Ended the French and Indian War. Spain ceded Florida to Britain; France gave Ohio Valley to Britain and land west of Mississippi to Spain." },
+  { term: "Proclamation Line of 1763", def: "Forbade British colonists from settling west of the Appalachian Mountains to avoid costly conflicts with Native Americans." },
+  { term: "Pontiac's Rebellion", def: "An alliance of Native American tribes that fought against British colonial expansion after the French and Indian War." },
+  { term: "Salutary Neglect", def: "Britain's policy of loosely enforcing trade laws in the colonies, allowing colonists to develop habits of self-governance. Ended after 1763." },
+  { term: "Navigation Acts", def: "British laws restricting colonial trade to Britain only. Grenville began enforcing these strictly after 1763." },
+  { term: "Quartering Act", def: "Required colonists to house and feed British soldiers stationed in their towns." },
+  { term: "Stamp Act (1765)", def: "Tax on paper goods (newspapers, diplomas, playing cards). Triggered massive colonial resistance with the cry 'No Taxation Without Representation.'" },
+  { term: "Virtual Representation", def: "Britain's argument that Parliament represented ALL English subjects, including colonists — colonists rejected this." },
+  { term: "No Taxation Without Representation", def: "Colonial slogan opposing the Stamp Act — argued that laws imposed without colonial consent in Parliament were tyranny." },
+  { term: "Committees of Correspondence", def: "Colonial networks that organized and spread information about grievances. By 1774, all but one colony had them." },
+  { term: "Sons & Daughters of Liberty", def: "Groups of merchants, traders, and artisans who organized boycotts and fought for repeal of the Stamp Act." },
+  { term: "Stamp Act Congress (1765)", def: "Delegates from 9 colonies formally petitioned Parliament to repeal the Stamp Act — first organized inter-colonial political action." },
+  { term: "Declaratory Act (1766)", def: "Passed right after repealing the Stamp Act — Parliament declared it could pass ANY laws it wanted over the colonies." },
+  { term: "Intolerable Acts / Coercive Acts (1774)", def: "Britain's response to the Boston Tea Party: closed Boston Harbor, imposed new Quartering Act. Colonists called them 'Intolerable.'" },
+  { term: "Natural Rights", def: "Enlightenment idea that humans are born with God-given rights — life, liberty, and property — that no government can take away." },
+  { term: "Social Contract", def: "Enlightenment idea that people create governments to protect their natural rights — and can overthrow tyrannical governments." },
+  { term: "Great Awakening", def: "Religious revival of the 1740s that emphasized individual relationship with God over church hierarchy — planted seeds of challenging authority." },
+  { term: "Common Sense (1776)", def: "Thomas Paine's pamphlet arguing British tyranny had peaked and independence was the only solution. Sold massively and shifted public opinion." },
+  { term: "Declaration of Independence", def: "Written by Thomas Jefferson in 1776. Used Enlightenment ideas (natural rights, social contract) to justify separation from Britain." },
+  { term: "Battle of Saratoga (1777)", def: "Major American victory that proved the colonists could win — convinced France to formally ally with the US against Britain." },
+  { term: "Treaty of Paris (1783)", def: "Ended the American Revolution. Britain recognized US independence and the US land doubled in size." },
+  { term: "Republican Motherhood", def: "Defined women's role as educating their sons in liberty and civic virtue. Limited but expanded access to education for women." },
+  { term: "Articles of Confederation", def: "First US Constitution (1777). Created an extremely weak federal government — couldn't tax, couldn't raise an army, couldn't regulate trade." },
+  { term: "Shays' Rebellion (1786–87)", def: "Unpaid war veterans led by Daniel Shays attacked Massachusetts courts and a federal arsenal. Exposed the Articles' fatal weakness." },
+  { term: "Northwest Ordinance (1787)", def: "Regulated western territory. Mandated land for schools, banned slavery in the Northwest Territory, created rules for statehood." },
+  { term: "Constitutional Convention (1787)", def: "55 delegates in Philadelphia replaced the Articles with the new Constitution, creating a stronger federal government." },
+  { term: "Separation of Powers", def: "The Constitution divided federal power into 3 branches: Legislative (Congress), Executive (President), Judicial (Supreme Court)." },
+  { term: "Federalism", def: "System where power is shared between federal and state governments. Some powers are federal-only, some state-only, some shared." },
+  { term: "Great Compromise", def: "Resolved the Virginia/New Jersey Plan debate: House of Representatives = population-based; Senate = equal representation per state." },
+  { term: "Three-Fifths Compromise", def: "Three-fifths of a state's enslaved population would count toward representation in the House of Representatives." },
+  { term: "Federalist Papers", def: "Essays by Hamilton, Madison, and Jay arguing for ratification of the Constitution. Key document in US political history." },
+  { term: "Federalists", def: "Political faction led by Alexander Hamilton that supported a strong federal government and ratification of the Constitution." },
+  { term: "Anti-Federalists", def: "Opposed ratification of the Constitution — feared strong central government and demanded a Bill of Rights." },
+  { term: "Bill of Rights", def: "First 10 amendments to the Constitution, ratified 1791. Guaranteed individual liberties to satisfy Anti-Federalist demands." },
+  { term: "Judiciary Act (1789)", def: "Created the federal court system: 13 district courts, 3 courts of appeal, and the Supreme Court (6 justices)." },
+  { term: "Whiskey Rebellion (1791–94)", def: "Western farmers rebelled against Hamilton's whiskey tax. Washington used federal force to suppress it — showed the new government had real power." },
+  { term: "Neutrality Proclamation (1793)", def: "Washington declared the US would stay out of European wars (including the French Revolution) to protect American trade." },
+  { term: "Alien & Sedition Acts (1798)", def: "Laws allowing the Adams administration to silence political dissent. Democratic-Republicans called them unconstitutional." },
+  { term: "Virginia & Kentucky Resolutions", def: "State resolutions declaring the Alien & Sedition Acts unconstitutional — argued states could nullify federal laws that exceeded constitutional power." },
+  { term: "Democratic-Republicans", def: "Political party led by Thomas Jefferson — favored state power, farmers, and limited federal government. Descended from Anti-Federalists." },
+  { term: "Battle of Fallen Timbers (1794)", def: "US military defeated a Native American alliance in Ohio, opening the territory to settlement. Led to Treaty of Greenville." },
+  { term: "Treaty of Greenville (1795)", def: "Native Americans ceded the Ohio territory to the US after their defeat at the Battle of Fallen Timbers." },
+  { term: "Jay's Treaty (1794)", def: "Britain agreed to withdraw forces from western US border forts (which they had kept in violation of the 1783 Treaty of Paris)." },
+  { term: "Pinckney's Treaty (1796)", def: "Spain recognized US borders, opened the Mississippi River and port of New Orleans to American merchants, reducing Spanish opposition to westward expansion." },
+];
+
+export default function App() {
+  const [view, setView] = useState("timeline");
+  const [expandedScene, setExpandedScene] = useState(null);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [shuffled, setShuffled] = useState([...allVocab]);
+
+  const shuffleCards = () => {
+    const arr = [...allVocab].sort(() => Math.random() - 0.5);
+    setShuffled(arr);
+    setCardIndex(0);
+    setFlipped(false);
+  };
+
+  const nextCard = () => {
+    setFlipped(false);
+    setTimeout(() => setCardIndex((i) => (i + 1) % shuffled.length), 150);
+  };
+  const prevCard = () => {
+    setFlipped(false);
+    setTimeout(() => setCardIndex((i) => (i - 1 + shuffled.length) % shuffled.length), 150);
+  };
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#0f0f0f",
+      fontFamily: "'Georgia', serif",
+      color: "#e8e0d0",
+    }}>
+      {/* Header */}
+      <div style={{
+        background: "linear-gradient(135deg, #1a0a00 0%, #2d1500 50%, #0f0f0f 100%)",
+        borderBottom: "2px solid #8b6914",
+        padding: "28px 24px 20px",
+        textAlign: "center",
+      }}>
+        <div style={{ fontSize: 11, letterSpacing: 6, color: "#8b6914", textTransform: "uppercase", marginBottom: 6 }}>AP US History · Unit 3</div>
+        <h1 style={{ margin: 0, fontSize: "clamp(22px, 5vw, 42px)", fontWeight: 700, color: "#f0e6c8", letterSpacing: 1 }}>
+          1754 – 1800
+        </h1>
+        <p style={{ margin: "6px 0 0", color: "#a89060", fontSize: 14, fontStyle: "italic" }}>
+          From the French &amp; Indian War to the Election of Jefferson
+        </p>
+        {/* Nav */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 18 }}>
+          {["timeline", "flashcards"].map(v => (
+            <button key={v} onClick={() => setView(v)} style={{
+              padding: "8px 24px",
+              borderRadius: 4,
+              border: `1.5px solid ${view === v ? "#c9a227" : "#444"}`,
+              background: view === v ? "#c9a227" : "transparent",
+              color: view === v ? "#0f0f0f" : "#a89060",
+              fontFamily: "Georgia, serif",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+              cursor: "pointer",
+              transition: "all 0.2s",
+            }}>
+              {v === "timeline" ? "📜 Timeline" : "🃏 Flashcards"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {view === "timeline" && (
+        <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 16px 60px" }}>
+          {acts.map(act => (
+            <div key={act.id} style={{ marginBottom: 48 }}>
+              {/* Act Header */}
+              <div style={{
+                display: "flex", alignItems: "center", gap: 16, marginBottom: 24,
+                paddingBottom: 12, borderBottom: `2px solid ${act.color}`,
+              }}>
+                <div style={{
+                  background: act.color, color: "#fff", fontWeight: 900,
+                  fontSize: 11, letterSpacing: 3, padding: "6px 14px", borderRadius: 3,
+                  textTransform: "uppercase",
+                }}>
+                  {act.title}
+                </div>
+                <div>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: "#f0e6c8" }}>{act.subtitle}</div>
+                </div>
+              </div>
+
+              {/* Scenes */}
+              <div style={{ position: "relative", paddingLeft: 28 }}>
+                {/* vertical line */}
+                <div style={{
+                  position: "absolute", left: 10, top: 0, bottom: 0,
+                  width: 2, background: `linear-gradient(to bottom, ${act.color}88, transparent)`,
+                }} />
+
+                {act.scenes.map((scene, si) => {
+                  const key = `${act.id}-${si}`;
+                  const open = expandedScene === key;
+                  return (
+                    <div key={si} style={{ marginBottom: 16, position: "relative" }}>
+                      {/* dot */}
+                      <div style={{
+                        position: "absolute", left: -24, top: 18,
+                        width: 14, height: 14, borderRadius: "50%",
+                        background: open ? act.accent : act.color,
+                        border: `2px solid ${act.accent}`,
+                        transition: "background 0.2s",
+                      }} />
+
+                      {/* Card */}
+                      <div
+                        onClick={() => setExpandedScene(open ? null : key)}
+                        style={{
+                          background: open ? "#1e1a14" : "#161310",
+                          border: `1.5px solid ${open ? act.accent : "#2e2a20"}`,
+                          borderRadius: 6,
+                          padding: "14px 18px",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <div>
+                            <span style={{
+                              fontSize: 10, letterSpacing: 2, color: act.accent,
+                              textTransform: "uppercase", fontWeight: 700,
+                            }}>{scene.year}</span>
+                            <div style={{ fontSize: 17, fontWeight: 700, color: "#f0e6c8", marginTop: 2 }}>
+                              {scene.title}
+                            </div>
+                          </div>
+                          <span style={{ color: act.accent, fontSize: 18 }}>{open ? "▲" : "▼"}</span>
+                        </div>
+
+                        {open && (
+                          <div style={{ marginTop: 16 }}>
+                            {/* Vocab */}
+                            <div style={{
+                              background: "#0d0b08", border: `1px solid ${act.color}55`,
+                              borderLeft: `3px solid ${act.color}`, borderRadius: 4,
+                              padding: "10px 14px", marginBottom: 14,
+                            }}>
+                              <div style={{ fontSize: 10, letterSpacing: 2, color: "#8b6914", textTransform: "uppercase", marginBottom: 4 }}>📖 Key Vocab</div>
+                              <div style={{ fontWeight: 700, color: "#e8c96e", marginBottom: 4 }}>{scene.vocab}</div>
+                              <div style={{ color: "#c8b88a", fontSize: 14, lineHeight: 1.6 }}>{scene.definition}</div>
+                            </div>
+
+                            {/* Cause → Effect */}
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
+                              <div style={{ background: "#130d08", border: "1px solid #c0392b44", borderRadius: 4, padding: "10px 12px" }}>
+                                <div style={{ fontSize: 10, letterSpacing: 2, color: "#c0392b", textTransform: "uppercase", marginBottom: 6 }}>⚡ CAUSE</div>
+                                <div style={{ color: "#d0c0a0", fontSize: 13, lineHeight: 1.6 }}>{scene.cause}</div>
+                              </div>
+                              <div style={{ background: "#080d13", border: "1px solid #1a527644", borderRadius: 4, padding: "10px 12px" }}>
+                                <div style={{ fontSize: 10, letterSpacing: 2, color: "#2980b9", textTransform: "uppercase", marginBottom: 6 }}>➡ EFFECT</div>
+                                <div style={{ color: "#d0c0a0", fontSize: 13, lineHeight: 1.6 }}>{scene.effect}</div>
+                              </div>
+                            </div>
+
+                            {/* Timeline events */}
+                            <div>
+                              <div style={{ fontSize: 10, letterSpacing: 2, color: "#666", textTransform: "uppercase", marginBottom: 8 }}>Key Events</div>
+                              {scene.events.map((ev, ei) => (
+                                <div key={ei} style={{
+                                  display: "flex", gap: 12, marginBottom: 8,
+                                  paddingBottom: 8, borderBottom: "1px solid #1e1a14",
+                                }}>
+                                  <div style={{
+                                    minWidth: 60, fontSize: 12, fontWeight: 700,
+                                    color: act.accent, paddingTop: 1,
+                                  }}>{ev.year}</div>
+                                  <div style={{ color: "#c0b090", fontSize: 13, lineHeight: 1.5 }}>{ev.detail}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {view === "flashcards" && (
+        <div style={{ maxWidth: 640, margin: "0 auto", padding: "40px 16px 60px", textAlign: "center" }}>
+          <div style={{ color: "#8b6914", fontSize: 13, marginBottom: 6 }}>
+            Card {cardIndex + 1} of {shuffled.length}
+          </div>
+
+          {/* Progress bar */}
+          <div style={{ height: 3, background: "#222", borderRadius: 2, marginBottom: 28 }}>
+            <div style={{
+              height: "100%", borderRadius: 2, background: "#c9a227",
+              width: `${((cardIndex + 1) / shuffled.length) * 100}%`,
+              transition: "width 0.3s",
+            }} />
+          </div>
+
+          {/* Card */}
+          <div
+            onClick={() => setFlipped(f => !f)}
+            style={{
+              background: flipped ? "#1a2e1a" : "#1a1a2e",
+              border: `2px solid ${flipped ? "#27ae60" : "#2980b9"}`,
+              borderRadius: 12,
+              padding: "40px 32px",
+              minHeight: 220,
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
+              transition: "all 0.3s",
+              boxShadow: `0 0 30px ${flipped ? "#27ae6022" : "#2980b922"}`,
+              marginBottom: 24,
+            }}
+          >
+            <div style={{
+              fontSize: 10, letterSpacing: 3, textTransform: "uppercase",
+              color: flipped ? "#27ae60" : "#2980b9", marginBottom: 16,
+            }}>
+              {flipped ? "✓ Definition" : "? Term"}
+            </div>
+            <div style={{
+              fontSize: flipped ? 15 : 22,
+              fontWeight: flipped ? 400 : 700,
+              color: "#f0e6c8",
+              lineHeight: 1.6,
+              textAlign: "center",
+            }}>
+              {flipped ? shuffled[cardIndex].def : shuffled[cardIndex].term}
+            </div>
+            {!flipped && (
+              <div style={{ marginTop: 20, color: "#555", fontSize: 12 }}>tap to flip</div>
+            )}
+          </div>
+
+          {/* Controls */}
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button onClick={prevCard} style={btnStyle("#333", "#aaa")}>← Prev</button>
+            <button onClick={() => setFlipped(f => !f)} style={btnStyle("#1a2a3a", "#2980b9")}>Flip Card</button>
+            <button onClick={nextCard} style={btnStyle("#333", "#aaa")}>Next →</button>
+            <button onClick={shuffleCards} style={btnStyle("#1a1a0a", "#c9a227")}>🔀 Shuffle</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function btnStyle(bg, border) {
+  return {
+    padding: "10px 20px",
+    background: bg,
+    border: `1.5px solid ${border}`,
+    borderRadius: 4,
+    color: border,
+    fontFamily: "Georgia, serif",
+    fontSize: 13,
+    fontWeight: 700,
+    cursor: "pointer",
+    letterSpacing: 1,
+  };
+}
